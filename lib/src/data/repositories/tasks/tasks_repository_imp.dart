@@ -1,78 +1,96 @@
+import 'dart:convert';
+
+import 'package:idez_todos/src/core/exception_extension.dart';
+import 'package:idez_todos/src/core/exceptions.dart';
 import 'package:idez_todos/src/core/result.dart';
-import 'package:idez_todos/src/data/services/local_storage_service.dart';
 import 'package:idez_todos/src/domain/models/task_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/v7.dart';
 
 import 'tasks_repository.dart';
 
 class TasksRepositoryImp implements TasksRepository {
-  final LocalStorageService storage;
+  final SharedPreferences _prefs;
 
-  const TasksRepositoryImp(this.storage);
+  const TasksRepositoryImp(this._prefs);
+
+  List<TaskModel> _getTasksFromStorage() {
+    final tasksJson = _prefs.getStringList('tasks') ?? [];
+    return tasksJson.map((e) => TaskModel.fromJson(json.decode(e))).toList();
+  }
+
+  Future<void> _saveTasksToStorage(List<TaskModel> tasks) async {
+    final tasksJson = tasks.map((e) => json.encode(e.toJson())).toList();
+    await _prefs.setStringList('tasks', tasksJson);
+  }
 
   @override
   AsyncResult<TaskModel> insertOne(String title) async {
     try {
-      final current = storage.get<List<TaskModel>>('tasks') ?? [];
+      final tasks = _getTasksFromStorage();
       final todo = TaskModel.create(id: UuidV7().generate(), title: title);
-      await storage.set<List<TaskModel>>('tasks', [...current, todo]);
-      return Result.success(todo);
+      tasks.add(todo);
+      await _saveTasksToStorage(tasks);
+      return Result.value(todo);
     } on Exception catch (e) {
-      return Result.error(e);
+      return Result.exception(UnknownException(e.message()));
     }
   }
 
   @override
   AsyncResult<List<TaskModel>> findMany([bool? done]) async {
     try {
-      final todos = storage.get<List<TaskModel>>('tasks') ?? [];
+      var tasks = _getTasksFromStorage();
       if (done != null) {
-        todos.removeWhere((element) => element.done != done);
+        tasks = tasks.where((element) => element.done == done).toList();
       }
-      return Result.success(todos..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
+      return Result.value(tasks..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
     } on Exception catch (e) {
-      return Result.error(e);
+      return Result.exception(UnknownException(e.message()));
     }
   }
 
   @override
-  AsyncResult<TaskModel> updateOne(String id, {String? title, bool? done}) async {
+  AsyncResult<TaskModel> updateOne(String id, UpdateOneTaskParams params) async {
     try {
-      if (title == null && done == null) {
-        throw Exception('Title or done must be provided');
+      if (params.isEmpty) {
+        throw RepositoryException('Title or done must be provided');
       }
-      final todos = storage.get<List<TaskModel>>('tasks') ?? [];
-      final index = todos.indexWhere((element) => element.id == id);
+      final tasks = _getTasksFromStorage();
+      final index = tasks.indexWhere((element) => element.id == id);
       if (index == -1) {
-        throw Exception('Task not found');
+        throw RepositoryException('Task not found');
       }
-      final todo = todos[index];
-      todos[index] = todo.copyWith(
-        title: title ?? todo.title,
-        done: done ?? todo.done,
+      final task = tasks[index];
+      tasks[index] = task.copyWith(
+        title: params.title ?? task.title,
+        done: params.done ?? task.done,
         updatedAt: DateTime.now(),
       );
-      await storage.set<List<TaskModel>>('tasks', todos);
-      return Result.success(todo);
+      await _saveTasksToStorage(tasks);
+      return Result.value(tasks[index]);
+    } on AppException catch (e) {
+      return Result.exception(e);
     } on Exception catch (e) {
-      return Result.error(e);
+      return Result.exception(UnknownException(e.message()));
     }
   }
 
   @override
   AsyncResult<TaskModel> deleteOne(String id) async {
     try {
-      final todos = storage.get<List<TaskModel>>('tasks') ?? [];
-      final index = todos.indexWhere((element) => element.id == id);
+      final tasks = _getTasksFromStorage();
+      final index = tasks.indexWhere((element) => element.id == id);
       if (index == -1) {
-        throw Exception('Task not found');
+        throw RepositoryException('Task not found');
       }
-      final todo = todos[index];
-      todos.removeAt(index);
-      await storage.set<List<TaskModel>>('tasks', todos);
-      return Result.success(todo);
+      final task = tasks.removeAt(index);
+      await _saveTasksToStorage(tasks);
+      return Result.value(task);
+    } on AppException catch (e) {
+      return Result.exception(e);
     } on Exception catch (e) {
-      return Result.error(e);
+      return Result.exception(UnknownException(e.message()));
     }
   }
 }

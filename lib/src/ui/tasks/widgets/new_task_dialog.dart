@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class NewTaskView extends StatefulWidget {
-  const NewTaskView({super.key});
+class NewTaskDialog extends StatefulWidget {
+  const NewTaskDialog({super.key});
 
   @override
-  State<NewTaskView> createState() => _NewTaskViewState();
+  State<NewTaskDialog> createState() => _NewTaskDialogState();
 }
 
-class _NewTaskViewState extends State<NewTaskView> {
+class _NewTaskDialogState extends State<NewTaskDialog> {
   late final GlobalKey<FormState> formKey;
   late final TextEditingController controller;
 

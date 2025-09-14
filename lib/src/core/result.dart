@@ -2,32 +2,32 @@ typedef AsyncResult<T> = Future<Result<T>>;
 
 sealed class Result<T> {
   const Result();
-  const factory Result.success(T success) = _Success<T>;
-  const factory Result.error(Exception error) = _Error<T>;
-  bool get isSuccess => this is _Success<T>;
-  T get success => switch (this) {
-    _Success<T>(:final _success) => _success,
-    _Error<T>() => throw Exception('No success found in this result!'),
+  const factory Result.value(T value) = _Value<T>;
+  const factory Result.exception(Exception exception) = _Exception<T>;
+  bool get hasValue => this is _Value<T>;
+  T get value => switch (this) {
+    _Value<T> v => v._value,
+    _Exception<T> _ => throw Exception('No value found in this result!'),
   };
-  bool get isError => this is _Error<T>;
-  Exception get error => switch (this) {
-    _Success<T>() => throw Exception('No error found in this result!'),
-    _Error<T>(:final _error) => _error,
+  bool get hasException => this is _Exception<T>;
+  Exception get exception => switch (this) {
+    _Value<T> _ => throw Exception('No exception found in this result!'),
+    _Exception<T> e => e._exception,
   };
-  S fold<S>(S Function(T success) onSuccess, S Function(Exception error) onError) {
+  S fold<S>(S Function(T value) onValue, S Function(Exception exception) onException) {
     return switch (this) {
-      _Success<T>(:final _success) => onSuccess(_success),
-      _Error<T>(:final _error) => onError(_error),
+      _Value<T> v => onValue(v._value),
+      _Exception<T> e => onException(e._exception),
     };
   }
 }
 
-class _Success<T> extends Result<T> {
-  final T _success;
-  const _Success(this._success);
+class _Value<T> extends Result<T> {
+  final T _value;
+  const _Value(this._value);
 }
 
-final class _Error<T> extends Result<T> {
-  final Exception _error;
-  const _Error(this._error);
+final class _Exception<T> extends Result<T> {
+  final Exception _exception;
+  const _Exception(this._exception);
 }

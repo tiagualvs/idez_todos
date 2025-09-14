@@ -2,8 +2,8 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-abstract final class AppTheme {
-  static ThemeData light = FlexThemeData.light(
+abstract final class MainTheme {
+  static ThemeData defaultTheme = FlexThemeData.light(
     colorScheme: lightColorScheme,
     subThemesData: const FlexSubThemesData(
       interactionEffects: true,
@@ -18,27 +18,6 @@ abstract final class AppTheme {
       appBarBackgroundSchemeColor: SchemeColor.primaryContainer,
       navigationRailUseIndicator: true,
     ),
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
-    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
-  );
-
-  static ThemeData dark = FlexThemeData.dark(
-    colorScheme: darkColorScheme,
-    subThemesData: const FlexSubThemesData(
-      interactionEffects: true,
-      tintedDisabledControls: true,
-      blendOnColors: true,
-      useM2StyleDividerInM3: true,
-      segmentedButtonSchemeColor: SchemeColor.primary,
-      inputDecoratorBorderType: FlexInputBorderType.outline,
-      inputDecoratorRadius: 8.0,
-      fabUseShape: true,
-      fabAlwaysCircular: true,
-      alignedDropdown: true,
-      appBarBackgroundSchemeColor: SchemeColor.primaryContainer,
-      navigationRailUseIndicator: true,
-    ),
-
     visualDensity: FlexColorScheme.comfortablePlatformDensity,
     cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
   );
@@ -91,55 +70,5 @@ abstract final class AppTheme {
     onInverseSurface: Color(0xFFF1F1F1),
     inversePrimary: Color(0xFF9198A7),
     surfaceTint: Color(0xFF0F172A),
-  );
-
-  static ColorScheme darkColorScheme = ColorScheme(
-    brightness: Brightness.dark,
-    primary: Color(0xFFF8FAFC),
-    onPrimary: Color(0xFF000000),
-    primaryContainer: Color(0xFFF8FAFC),
-    onPrimaryContainer: Color(0xFF000000),
-    primaryFixed: Color(0xFFC7CCD6),
-    primaryFixedDim: Color(0xFF9BA2B4),
-    onPrimaryFixed: Color(0xFF000000),
-    onPrimaryFixedVariant: Color(0xFF000000),
-    secondary: Color(0xFF1E293B),
-    onSecondary: Color(0xFFFFFFFF),
-    secondaryContainer: Color(0xFF1E293B),
-    onSecondaryContainer: Color(0xFFFFFFFF),
-    secondaryFixed: Color(0xFFFAFAFB),
-    secondaryFixedDim: Color(0xFFEFF1F2),
-    onSecondaryFixed: Color(0xFF2C4A67),
-    onSecondaryFixedVariant: Color(0xFF406A94),
-    tertiary: Color(0xFF1E293B),
-    onTertiary: Color(0xFFFFFFFF),
-    tertiaryContainer: Color(0xFF1E293B),
-    onTertiaryContainer: Color(0xFFFFFFFF),
-    tertiaryFixed: Color(0xFFFAFAFB),
-    tertiaryFixedDim: Color(0xFFEFF1F2),
-    onTertiaryFixed: Color(0xFF2C4A67),
-    onTertiaryFixedVariant: Color(0xFF406A94),
-    error: Color(0xFF7F1D1D),
-    onError: Color(0xFFFFFFFF),
-    errorContainer: Color(0xFF410F0F),
-    onErrorContainer: Color(0xFFFFFFFF),
-    surface: Color(0xFF080808),
-    onSurface: Color(0xFFF1F1F1),
-    surfaceDim: Color(0xFF060606),
-    surfaceBright: Color(0xFF2C2C2C),
-    surfaceContainerLowest: Color(0xFF010101),
-    surfaceContainerLow: Color(0xFF0E0E0E),
-    surfaceContainer: Color(0xFF151515),
-    surfaceContainerHigh: Color(0xFF1D1D1D),
-    surfaceContainerHighest: Color(0xFF282828),
-    onSurfaceVariant: Color(0xFFCACACA),
-    outline: Color(0xFF777777),
-    outlineVariant: Color(0xFF414141),
-    shadow: Color(0xFF000000),
-    scrim: Color(0xFF000000),
-    inverseSurface: Color(0xFFE8E8E8),
-    onInverseSurface: Color(0xFF2A2A2A),
-    inversePrimary: Color(0xFF6B6B6B),
-    surfaceTint: Color(0xFFF8FAFC),
   );
 }

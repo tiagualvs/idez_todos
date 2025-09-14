@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:idez_todos/src/core/theme.dart';
-import 'package:idez_todos/src/routing/router.dart';
+import 'package:idez_todos/src/main_router.dart';
 
 class MainView extends StatelessWidget {
   const MainView({super.key});
@@ -10,10 +10,9 @@ class MainView extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Idez Todos',
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.light,
-      routerConfig: router,
+      theme: MainTheme.defaultTheme,
+      darkTheme: MainTheme.defaultTheme,
+      routerConfig: MainRouter.router,
     );
   }
 }
