@@ -11,7 +11,7 @@ O aplicativo permite que os usuários gerenciem suas tarefas diárias. As funcio
 O projeto foi estruturado seguindo princípios de Clean Architecture, visando a separação de responsabilidades, escalabilidade e testabilidade. As principais camadas são:
 
 -   **`lib/src/data`**: Contém as implementações dos repositórios e fontes de dados (neste caso, `shared_preferences` para persistência local).
--   **`lib/src/domain`**: Camada de domínio, contendo os modelos de dados (`TaskModel`) e as abstrações (contratos) dos repositórios.
+-   **`lib/src/domain`**: Camada de domínio, contendo os modelos de dados (`TaskModel`).
 -   **`lib/src/ui`**: Responsável pela apresentação (UI), contendo as views, view models e widgets. O gerenciamento de estado é feito com o `Provider`.
 -   **`lib/src/core`**: Componentes e utilitários compartilhados por todo o aplicativo, como classes de resultado, exceptions, temas e navegação.
 
@@ -32,7 +32,7 @@ A navegação entre telas é gerenciada pelo pacote `go_router`.
 
 1.  **Clone o repositório:**
     ```bash
-    git clone <URL_DO_REPOSITORIO>
+    git clone https://github.com/tiagualvs/idez_todos.git
     cd idez_todos
     ```
 
