@@ -8,7 +8,7 @@ O aplicativo permite que os usuários gerenciem suas tarefas diárias. As funcio
 
 ## Estrutura do Projeto
 
-O projeto foi estruturado seguindo princípios de Clean Architecture, visando a separação de responsabilidades, escalabilidade e testabilidade. As principais camadas são:
+O projeto foi estruturado seguindo princípios de Clean Architecture e também [a arquitetura sugerida pela equipe flutter](https://docs.flutter.dev/app-architecture), visando a separação de responsabilidades, escalabilidade e testabilidade. As principais camadas são:
 
 -   **`lib/src/data`**: Contém as implementações dos repositórios e fontes de dados (neste caso, `shared_preferences` para persistência local).
 -   **`lib/src/domain`**: Camada de domínio, contendo os modelos de dados (`TaskModel`).
